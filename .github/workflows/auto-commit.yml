@@ -1,0 +1,31 @@
+name: Auto Commit and Push
+
+on:
+  schedule:
+    # Runs every minute
+    - cron: '*/1 * * * *'
+
+jobs:
+  auto-commit:
+    runs-on: ubuntu-latest
+    steps:
+      # Check out the repository
+      - uses: actions/checkout@v2
+
+      # Make some changes or run a script (if needed)
+      - name: Make Changes
+        run: |
+          echo "Automated changes made at $(date)" >> auto_commit.txt
+
+      # Configure Git
+      - name: Set up Git
+        run: |
+          git config --global user.name "github-actions"
+          git config --global user.email "github-actions@github.com"
+
+      # Stage, commit, and push changes
+      - name: Commit and Push changes
+        run: |
+          git add .
+          git commit -m "Automated commit at $(date)"
+          git push origin main
